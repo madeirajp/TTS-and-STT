@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina3_5" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="STT_and_TTS" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DFd-xr-pYr">
+                                <rect key="frame" x="10" y="50" width="300" height="100"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="yDA-Ky-bu3"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Select Language" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="0J2-mk-9st">
+                                <rect key="frame" x="20" y="170" width="280" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="sNd-03-yJz"/>
+                                </constraints>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K96-BR-dIr">
+                                <rect key="frame" x="50" y="280" width="70" height="70"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="70" id="NU9-1T-NKu"/>
+                                    <constraint firstAttribute="width" constant="70" id="aHY-bJ-mrR"/>
+                                </constraints>
+                                <state key="normal" title="Button" image="speaker_icon"/>
+                                <connections>
+                                    <action selector="ttsAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="I1N-gR-KQw"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rPS-4P-bFU">
+                                <rect key="frame" x="200" y="280" width="70" height="70"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="70" id="JF0-vl-4zP"/>
+                                    <constraint firstAttribute="height" constant="70" id="ReV-Bx-5Yb"/>
+                                </constraints>
+                                <state key="normal" title="Button" image="microphone_icon"/>
+                                <connections>
+                                    <action selector="sttAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Hdk-ql-T2e"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="K96-BR-dIr" firstAttribute="top" secondItem="0J2-mk-9st" secondAttribute="bottom" constant="80" id="2Mx-mi-SFh"/>
+                            <constraint firstItem="0J2-mk-9st" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="ATY-HQ-KGM"/>
+                            <constraint firstItem="K96-BR-dIr" firstAttribute="leading" secondItem="0J2-mk-9st" secondAttribute="leading" constant="30" id="BZc-UW-fVH"/>
+                            <constraint firstItem="0J2-mk-9st" firstAttribute="top" secondItem="DFd-xr-pYr" secondAttribute="bottom" constant="20" id="KbV-V8-jdf"/>
+                            <constraint firstItem="DFd-xr-pYr" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="30" id="UGA-19-Pvg"/>
+                            <constraint firstItem="DFd-xr-pYr" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="10" id="a46-uK-kvn"/>
+                            <constraint firstItem="rPS-4P-bFU" firstAttribute="top" secondItem="0J2-mk-9st" secondAttribute="bottom" constant="80" id="kas-C2-0yv"/>
+                            <constraint firstItem="rPS-4P-bFU" firstAttribute="trailing" secondItem="0J2-mk-9st" secondAttribute="trailing" constant="-30" id="oly-HZ-I2a"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="0J2-mk-9st" secondAttribute="trailing" constant="20" id="ubV-Ut-Ixz"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="DFd-xr-pYr" secondAttribute="trailing" constant="10" id="zur-Ns-sM7"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                    </view>
+                    <connections>
+                        <outlet property="languageTextField" destination="0J2-mk-9st" id="GCb-3g-rvr"/>
+                        <outlet property="sttButton" destination="rPS-4P-bFU" id="KsX-Ta-Agz"/>
+                        <outlet property="textView" destination="DFd-xr-pYr" id="8fC-gL-gfv"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-55" y="71"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="microphone_icon" width="512" height="512"/>
+        <image name="speaker_icon" width="2000" height="2000"/>
+    </resources>
+</document>
