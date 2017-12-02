@@ -12,6 +12,8 @@
 		5F22E8AA1FC5C463005D7530 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5F22E8A81FC5C463005D7530 /* Main.storyboard */; };
 		5F22E8AC1FC5C463005D7530 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5F22E8AB1FC5C463005D7530 /* Assets.xcassets */; };
 		5F22E8AF1FC5C463005D7530 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5F22E8AD1FC5C463005D7530 /* LaunchScreen.storyboard */; };
+		5F5DF18E1FD327A9004196F5 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F5DF18D1FD327A9004196F5 /* SettingsViewController.swift */; };
+		5F5DF1901FD33457004196F5 /* CustomSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F5DF18F1FD33457004196F5 /* CustomSlider.swift */; };
 		5FC3EA801FC74B3D00CB44A8 /* Speech.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FC3EA7E1FC73C0A00CB44A8 /* Speech.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
 
@@ -23,6 +25,8 @@
 		5F22E8AB1FC5C463005D7530 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5F22E8AE1FC5C463005D7530 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5F22E8B01FC5C463005D7530 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5F5DF18D1FD327A9004196F5 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		5F5DF18F1FD33457004196F5 /* CustomSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSlider.swift; sourceTree = "<group>"; };
 		5FC3EA7E1FC73C0A00CB44A8 /* Speech.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Speech.framework; path = System/Library/Frameworks/Speech.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -60,10 +64,12 @@
 			children = (
 				5F22E8A41FC5C462005D7530 /* AppDelegate.swift */,
 				5F22E8A61FC5C462005D7530 /* ViewController.swift */,
+				5F5DF18D1FD327A9004196F5 /* SettingsViewController.swift */,
 				5F22E8A81FC5C463005D7530 /* Main.storyboard */,
 				5F22E8AB1FC5C463005D7530 /* Assets.xcassets */,
 				5F22E8AD1FC5C463005D7530 /* LaunchScreen.storyboard */,
 				5F22E8B01FC5C463005D7530 /* Info.plist */,
+				5F5DF18F1FD33457004196F5 /* CustomSlider.swift */,
 			);
 			path = "STT and TTS";
 			sourceTree = "<group>";
@@ -150,6 +156,8 @@
 			files = (
 				5F22E8A71FC5C462005D7530 /* ViewController.swift in Sources */,
 				5F22E8A51FC5C462005D7530 /* AppDelegate.swift in Sources */,
+				5F5DF18E1FD327A9004196F5 /* SettingsViewController.swift in Sources */,
+				5F5DF1901FD33457004196F5 /* CustomSlider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

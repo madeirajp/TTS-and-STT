@@ -11,14 +11,15 @@ import Speech
 import AVFoundation
 
 @available(iOS 10.0, *)
-class ViewController: UIViewController,SFSpeechRecognizerDelegate,UITextViewDelegate, UITextFieldDelegate,UIPickerViewDelegate,UIPickerViewDataSource{
+class ViewController: UIViewController,AVSpeechSynthesizerDelegate,SFSpeechRecognizerDelegate,UITextViewDelegate, UITextFieldDelegate,UIPickerViewDelegate,UIPickerViewDataSource,SettingsViewControllerDelegate{
+
+    
 
     @IBOutlet var textView: UITextView!
     
     @IBOutlet var languageTextField: UITextField!
     @IBOutlet weak var sttButton: UIButton!
-    
-//    var languageOption = ["...","en-US","pl-PL","tr-TR","de-DE"]
+    @IBOutlet weak var ttsButton: UIButton!
     
     var arrLanguages: [Dictionary<String, String?>] = []
     
@@ -27,16 +28,27 @@ class ViewController: UIViewController,SFSpeechRecognizerDelegate,UITextViewDele
         return (iosVersion >= 10 ? SFSpeechRecognizer()! : nil)
     }()
     
+    var rate: Float!
+    
+    var pitch: Float!
+    
+    var volume: Float!
+    
     private var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
     private var recognitionTask: SFSpeechRecognitionTask?
     private let audioEngine = AVAudioEngine()
     
     var utterance = AVSpeechUtterance()
+    let speechSynthesizer = AVSpeechSynthesizer()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         prepareLanguages()
+        self.speechSynthesizer.delegate = self
+        if !loadSettings(){
+            registerDefaultTTSSettings()
+        }
         setupTextView()
         setupPickerTextField()
         prepareSpeechRecognizer()
@@ -59,12 +71,12 @@ class ViewController: UIViewController,SFSpeechRecognizerDelegate,UITextViewDele
                     
                 case .denied:
                     isButtonEnabled = false
-                    self.createAlert(title: "Access Denied by User", message: "Speech Recognition has been denied. Please allow speech recognition from the Settings", actionTitle: "Close")
+                    self.createAlert(title: "Access Denied by User", message: "Speech Recognition has been denied. Please allow speech recognition from the Settings", actionTitle: "Close")//////
                     print("User denied access to speech recognition")
                     
                 case .restricted:
                     isButtonEnabled = false
-                    self.createAlert(title: "Error", message: "Speech recognition restricted on this device", actionTitle: "Close")
+                    self.createAlert(title: "Error", message: "Speech recognition restricted on this device", actionTitle: "Close")////////
                     print("Speech recognition restricted on this device")
                     
                 case .notDetermined:
@@ -102,7 +114,7 @@ class ViewController: UIViewController,SFSpeechRecognizerDelegate,UITextViewDele
             try audioSession.setMode(AVAudioSessionModeMeasurement)
             try audioSession.setActive(true, with: .notifyOthersOnDeactivation)
         } catch {
-            self.createAlert(title: "Error!", message: "audioSession properties weren't set because of an error.", actionTitle: "Close")
+            self.createAlert(title: "Error!", message: "audioSession properties weren't set because of an error.", actionTitle: "Close")////////////
             print("audioSession properties weren't set because of an error. ")
         }
         
@@ -114,7 +126,7 @@ class ViewController: UIViewController,SFSpeechRecognizerDelegate,UITextViewDele
         
         //Check if the recognitionRequest object is instantiated and is not nil.
         guard let recognitionRequest = recognitionRequest else {
-            self.createAlert(title: "Error!", message: "Unable to create an SFSpeechAudioBufferRecognitionRequest object", actionTitle: "Close")
+            self.createAlert(title: "Error!", message: "Unable to create an SFSpeechAudioBufferRecognitionRequest object", actionTitle: "Close")/////
             fatalError("Unable to create an SFSpeechAudioBufferRecognitionRequest object")
         }
         
@@ -157,7 +169,7 @@ class ViewController: UIViewController,SFSpeechRecognizerDelegate,UITextViewDele
         do {
             try audioEngine.start()
         } catch {
-            self.createAlert(title: "Error!", message: "audioEngine couldn't start because of an error", actionTitle: "Close")
+            self.createAlert(title: "Error!", message: "audioEngine couldn't start because of an error", actionTitle: "Close")///
             print("audioEngine couldn't start because of an error.")
         }
     }
@@ -196,16 +208,71 @@ class ViewController: UIViewController,SFSpeechRecognizerDelegate,UITextViewDele
         }
     }
     
-    @IBAction func ttsAction(_ sender: Any) {
+    func registerDefaultTTSSettings(){ //// save default settings
+        rate = AVSpeechUtteranceDefaultSpeechRate
+        pitch = 1.0
+        volume = 1.0
+        let defaultSpeechSettings: Dictionary<NSObject, AnyObject> = ["rate" as NSObject: rate as AnyObject, "pitch" as NSObject: pitch as AnyObject, "volume" as NSObject: volume as NSObject]
+        
+        UserDefaults.standard.register(defaults: defaultSpeechSettings as! [String : Any])
+    }
+    
+    func loadSettings() -> Bool {// Load user defaults
+        let userDefaults = UserDefaults.standard as UserDefaults
+        
+        if let theRate: Float = userDefaults.value(forKey: "rate") as? Float {
+            rate = theRate
+            pitch = userDefaults.value(forKey: "pitch") as! Float
+            volume = userDefaults.value(forKey: "volume") as! Float
+            
+            return true
+        }
+        
+        return false
+    }
+    
+    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {// set button image back to speak icon
+        self.ttsButton.setImage(UIImage(named:"speaker_icon"), for: .normal)
+    }
+    
+    @IBAction func ttsAction(_ sender: Any) {////
+        
+        if speechSynthesizer.isSpeaking{
+            speechSynthesizer.stopSpeaking(at: .immediate)
+            self.ttsButton.setImage(UIImage(named:"speaker_icon"), for: .normal)
+        }
+        else {
+            self.speakTTS()
+            self.ttsButton.setImage(UIImage(named:"speakerStop_icon"), for: .normal)
+        }
+        
+    }
+    
+    func speakTTS(){//
         self.utterance = AVSpeechUtterance(string: textView.text) // 1
         self.utterance.voice = AVSpeechSynthesisVoice(language: languageTextField.text) // 2
         
-        self.utterance.rate = 0.5 // 3
-        self.utterance.pitchMultiplier = 0.25
-        self.utterance.volume = 0.75
+        self.utterance.rate = rate //0.5 // 3
+        self.utterance.pitchMultiplier = pitch//0.25
+        self.utterance.volume = volume // 0.75
         
-        let synthesizer = AVSpeechSynthesizer() // 4
-        synthesizer.speak(utterance) // 5
+        //        let synthesizer = AVSpeechSynthesizer() // 4
+        speechSynthesizer.speak(utterance) // 5
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {//
+        if segue.identifier == "idSegueSettings" {
+            let settingsViewController = segue.destination as! SettingsViewController
+            settingsViewController.delegate = self
+        }
+    }
+    
+    func didSaveSettings() {//
+        let settings = UserDefaults.standard as UserDefaults!
+        
+        rate = settings?.value(forKey: "rate") as! Float
+        pitch = settings?.value(forKey: "pitch") as! Float
+        volume = settings?.value(forKey: "volume") as! Float
     }
     
                                     /*      UI METHODS      */
