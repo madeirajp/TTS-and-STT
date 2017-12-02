@@ -18,7 +18,9 @@ class ViewController: UIViewController,SFSpeechRecognizerDelegate,UITextViewDele
     @IBOutlet var languageTextField: UITextField!
     @IBOutlet weak var sttButton: UIButton!
     
-    var languageOption = ["...","en-US","pl-PL","tr-TR","de-DE"]
+//    var languageOption = ["...","en-US","pl-PL","tr-TR","de-DE"]
+    
+    var arrLanguages: [Dictionary<String, String?>] = []
     
     private var speechRecognizer :SFSpeechRecognizer? = {
         let iosVersion = NSString(string: UIDevice.current.systemVersion).doubleValue
@@ -29,8 +31,12 @@ class ViewController: UIViewController,SFSpeechRecognizerDelegate,UITextViewDele
     private var recognitionTask: SFSpeechRecognitionTask?
     private let audioEngine = AVAudioEngine()
     
+    var utterance = AVSpeechUtterance()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        prepareLanguages()
         setupTextView()
         setupPickerTextField()
         prepareSpeechRecognizer()
@@ -53,14 +59,17 @@ class ViewController: UIViewController,SFSpeechRecognizerDelegate,UITextViewDele
                     
                 case .denied:
                     isButtonEnabled = false
+                    self.createAlert(title: "Access Denied by User", message: "Speech Recognition has been denied. Please allow speech recognition from the Settings", actionTitle: "Close")
                     print("User denied access to speech recognition")
                     
                 case .restricted:
                     isButtonEnabled = false
+                    self.createAlert(title: "Error", message: "Speech recognition restricted on this device", actionTitle: "Close")
                     print("Speech recognition restricted on this device")
                     
                 case .notDetermined:
                     isButtonEnabled = false
+                    self.createAlert(title: "No Authorization", message: "Speech recognition not yet authorized", actionTitle: "Close")
                     print("Speech recognition not yet authorized")
                 }
                 
@@ -69,6 +78,12 @@ class ViewController: UIViewController,SFSpeechRecognizerDelegate,UITextViewDele
                 }
             }
         }
+    }
+    
+    func createAlert(title:String, message:String, actionTitle:String){
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: actionTitle, style: UIAlertActionStyle.default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
     }
     
     // start recording and get the best transcription
@@ -87,7 +102,8 @@ class ViewController: UIViewController,SFSpeechRecognizerDelegate,UITextViewDele
             try audioSession.setMode(AVAudioSessionModeMeasurement)
             try audioSession.setActive(true, with: .notifyOthersOnDeactivation)
         } catch {
-            print("audioSession properties weren't set because of an error.")
+            self.createAlert(title: "Error!", message: "audioSession properties weren't set because of an error.", actionTitle: "Close")
+            print("audioSession properties weren't set because of an error. ")
         }
         
         //Instantiate the recognitionRequest. Here we create the SFSpeechAudioBufferRecognitionRequest object. Later, we use it to pass our audio data to Apple’s servers.
@@ -98,6 +114,7 @@ class ViewController: UIViewController,SFSpeechRecognizerDelegate,UITextViewDele
         
         //Check if the recognitionRequest object is instantiated and is not nil.
         guard let recognitionRequest = recognitionRequest else {
+            self.createAlert(title: "Error!", message: "Unable to create an SFSpeechAudioBufferRecognitionRequest object", actionTitle: "Close")
             fatalError("Unable to create an SFSpeechAudioBufferRecognitionRequest object")
         }
         
@@ -140,6 +157,7 @@ class ViewController: UIViewController,SFSpeechRecognizerDelegate,UITextViewDele
         do {
             try audioEngine.start()
         } catch {
+            self.createAlert(title: "Error!", message: "audioEngine couldn't start because of an error", actionTitle: "Close")
             print("audioEngine couldn't start because of an error.")
         }
     }
@@ -165,10 +183,26 @@ class ViewController: UIViewController,SFSpeechRecognizerDelegate,UITextViewDele
         }
     }
     
+    // Preparing the supported languages
+    func prepareLanguages(){
+        for voice in AVSpeechSynthesisVoice.speechVoices() {
+            
+            let voiceLanguageCode = (voice as AVSpeechSynthesisVoice).language  // getting language code from avspeechsynthesisvoice
+            
+            let languageName = (Locale.current as NSLocale).displayName(forKey: NSLocale.Key.identifier, value: voiceLanguageCode)
+            let dictionary = ["languageName": languageName, "languageCode": voiceLanguageCode]
+            
+            arrLanguages.append(dictionary)
+        }
+    }
+    
     @IBAction func ttsAction(_ sender: Any) {
-        let utterance = AVSpeechUtterance(string: textView.text) // 1
-        utterance.voice = AVSpeechSynthesisVoice(language: languageTextField.text) // 2
-        utterance.rate = 0.5 // 3
+        self.utterance = AVSpeechUtterance(string: textView.text) // 1
+        self.utterance.voice = AVSpeechSynthesisVoice(language: languageTextField.text) // 2
+        
+        self.utterance.rate = 0.5 // 3
+        self.utterance.pitchMultiplier = 0.25
+        self.utterance.volume = 0.75
         
         let synthesizer = AVSpeechSynthesizer() // 4
         synthesizer.speak(utterance) // 5
@@ -248,13 +282,19 @@ class ViewController: UIViewController,SFSpeechRecognizerDelegate,UITextViewDele
         return 1
     }
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return languageOption.count
+//        return languageOption.count
+        return arrLanguages.count
     }
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return languageOption[row]
+//        return languageOption[row]
+        let voiceLanguagesDictionary = arrLanguages[row] as Dictionary<String, String?>
+        
+        return voiceLanguagesDictionary["languageName"]!
     }
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        languageTextField.text = languageOption[row]
+//        languageTextField.text = languageOption[row]
+        let voiceLanguagesDictionary = arrLanguages[row] as Dictionary<String, String?>
+        languageTextField.text = voiceLanguagesDictionary["languageCode"]!
     }
 }
 
