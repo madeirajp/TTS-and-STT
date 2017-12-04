@@ -13,10 +13,7 @@ import AVFoundation
 @available(iOS 10.0, *)
 class ViewController: UIViewController,AVSpeechSynthesizerDelegate,SFSpeechRecognizerDelegate,UITextViewDelegate, UITextFieldDelegate,UIPickerViewDelegate,UIPickerViewDataSource,SettingsViewControllerDelegate{
 
-    
-
     @IBOutlet var textView: UITextView!
-    
     @IBOutlet var languageTextField: UITextField!
     @IBOutlet weak var sttButton: UIButton!
     @IBOutlet weak var ttsButton: UIButton!
@@ -43,15 +40,38 @@ class ViewController: UIViewController,AVSpeechSynthesizerDelegate,SFSpeechRecog
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        print(reachabilityStatus)
+        NotificationCenter.default.addObserver(self, selector: #selector(ViewController.reachabilityStatusChanged), name: NSNotification.Name(rawValue: "ReachStatusChanged"), object: nil)////
+        reachabilityStatusChanged()//////
         prepareLanguages()
         self.speechSynthesizer.delegate = self
-        if !loadSettings(){
+        if !loadSettings(){//////////
             registerDefaultTTSSettings()
         }
         setupTextView()
         setupPickerTextField()
-        prepareSpeechRecognizer()
+        
+    }
+    
+    @objc func reachabilityStatusChanged(){///
+        switch reachabilityStatus {
+        case NOACCESS:
+            DispatchQueue.main.async {
+                let alert = UIAlertController(title: "No Internet Access", message: "Please make sure you are connected to the Internet", preferredStyle: .alert)
+                let okAction = UIAlertAction(title: "Ok", style: .default) { action -> Void in
+                    print("Ok")
+                }
+                alert.addAction(okAction)
+                self.sttButton.isEnabled = false
+                self.present(alert, animated: true, completion: nil)
+            }
+        default:
+            prepareSpeechRecognizer()
+        }
+    }
+    
+    deinit{//////
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "ReachStatusChanged"), object: nil)
     }
     
     // Preperation of the speech recognizer

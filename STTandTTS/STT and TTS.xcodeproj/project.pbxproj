@@ -14,6 +14,8 @@
 		5F22E8AF1FC5C463005D7530 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5F22E8AD1FC5C463005D7530 /* LaunchScreen.storyboard */; };
 		5F5DF18E1FD327A9004196F5 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F5DF18D1FD327A9004196F5 /* SettingsViewController.swift */; };
 		5F5DF1901FD33457004196F5 /* CustomSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F5DF18F1FD33457004196F5 /* CustomSlider.swift */; };
+		5F8012891FD4240F00069543 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F8012881FD4240E00069543 /* Reachability.m */; };
+		5F80128C1FD4244300069543 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F80128B1FD4244300069543 /* Constants.swift */; };
 		5FC3EA801FC74B3D00CB44A8 /* Speech.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FC3EA7E1FC73C0A00CB44A8 /* Speech.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
 
@@ -27,6 +29,10 @@
 		5F22E8B01FC5C463005D7530 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5F5DF18D1FD327A9004196F5 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		5F5DF18F1FD33457004196F5 /* CustomSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSlider.swift; sourceTree = "<group>"; };
+		5F8012861FD4240E00069543 /* STT and TTS-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "STT and TTS-Bridging-Header.h"; sourceTree = "<group>"; };
+		5F8012871FD4240E00069543 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		5F8012881FD4240E00069543 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
+		5F80128B1FD4244300069543 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		5FC3EA7E1FC73C0A00CB44A8 /* Speech.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Speech.framework; path = System/Library/Frameworks/Speech.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -62,6 +68,7 @@
 		5F22E8A31FC5C462005D7530 /* STT and TTS */ = {
 			isa = PBXGroup;
 			children = (
+				5F8012851FD423FA00069543 /* Obj-C */,
 				5F22E8A41FC5C462005D7530 /* AppDelegate.swift */,
 				5F22E8A61FC5C462005D7530 /* ViewController.swift */,
 				5F5DF18D1FD327A9004196F5 /* SettingsViewController.swift */,
@@ -70,8 +77,19 @@
 				5F22E8AD1FC5C463005D7530 /* LaunchScreen.storyboard */,
 				5F22E8B01FC5C463005D7530 /* Info.plist */,
 				5F5DF18F1FD33457004196F5 /* CustomSlider.swift */,
+				5F80128B1FD4244300069543 /* Constants.swift */,
 			);
 			path = "STT and TTS";
+			sourceTree = "<group>";
+		};
+		5F8012851FD423FA00069543 /* Obj-C */ = {
+			isa = PBXGroup;
+			children = (
+				5F8012871FD4240E00069543 /* Reachability.h */,
+				5F8012881FD4240E00069543 /* Reachability.m */,
+				5F8012861FD4240E00069543 /* STT and TTS-Bridging-Header.h */,
+			);
+			path = "Obj-C";
 			sourceTree = "<group>";
 		};
 		5FC3EA7D1FC73C0800CB44A8 /* Frameworks */ = {
@@ -114,6 +132,7 @@
 				TargetAttributes = {
 					5F22E8A01FC5C462005D7530 = {
 						CreatedOnToolsVersion = 9.1;
+						LastSwiftMigration = 0910;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -158,6 +177,8 @@
 				5F22E8A51FC5C462005D7530 /* AppDelegate.swift in Sources */,
 				5F5DF18E1FD327A9004196F5 /* SettingsViewController.swift in Sources */,
 				5F5DF1901FD33457004196F5 /* CustomSlider.swift in Sources */,
+				5F8012891FD4240F00069543 /* Reachability.m in Sources */,
+				5F80128C1FD4244300069543 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -294,6 +315,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 2U24XU78L9;
 				INFOPLIST_FILE = "STT and TTS/Info.plist";
@@ -302,6 +324,8 @@
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.emirhaktan.STT-and-TTS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "STT and TTS/Obj-C/STT and TTS-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -311,6 +335,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 2U24XU78L9;
 				INFOPLIST_FILE = "STT and TTS/Info.plist";
@@ -319,6 +344,7 @@
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.emirhaktan.STT-and-TTS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "STT and TTS/Obj-C/STT and TTS-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
